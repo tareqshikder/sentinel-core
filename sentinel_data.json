@@ -1,22 +1,11 @@
 {
     "status": "ONLINE",
-    "last_updated": "2026-05-06 07:04:34",
-    "node": "Pixel-7 [Termux]",
-    "intelligence_feed": [
-        {
-            "title": "The Big Data Combine Engineered by BattleFin",
-            "deadline": "2013-10-01 23:59:00",
-            "category": "Research"
-        },
-        {
-            "title": "Tweet Sentiment Extraction",
-            "deadline": "2020-06-16 23:59:00",
-            "category": "Featured"
-        },
-        {
-            "title": "Sentiment Analysis on Movie Reviews",
-            "deadline": "2015-02-28 23:59:00",
-            "category": "Playground"
-        }
-    ]
+    "node": "Pixel-7-Intelligence-Node",
+    "update_source": "Strategic-Intelligence-Hub",
+    "live_message": {
+        "user": "Md. Tarequddin Shikder",
+        "intel_level": "Level-01 Strategic",
+        "text": "Monitoring AI-driven Electronic Warfare | IDS Active",
+        "timestamp": "04:19 PM"
+    }
 }
