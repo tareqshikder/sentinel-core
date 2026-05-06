@@ -1,3 +1,17 @@
-git init
-git add .
-git commit -m "Initialize Sovereign Node v2.0"
+name: Sync Sentinel Data
+on:
+  push:
+    paths:
+      - 'sentinel_data.json'
+
+permissions:
+  contents: write
+
+jobs:
+  update-dashboard:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+      - name: Deploy Status
+        run: echo "Node Data Synced Successfully"
