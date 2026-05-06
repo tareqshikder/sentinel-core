@@ -1,11 +1,11 @@
 {
     "status": "ONLINE",
     "node": "Pixel-7-Intelligence-Node",
-    "update_source": "Strategic-Intelligence-Hub",
+    "update_source": "Kaggle-OSINT-Stream",
     "live_message": {
         "user": "Md. Tarequddin Shikder",
         "intel_level": "Level-01 Strategic",
-        "text": "Monitoring AI-driven Electronic Warfare | IDS Active",
-        "timestamp": "04:19 PM"
+        "text": "Latest Global Insight: Military Assets Dataset (12 Classes -Yolo8 Format) | IDS: Secure",
+        "timestamp": "04:25 PM"
     }
 }
