@@ -1,42 +1,69 @@
-import os
+import yfinance as yf
+import feedparser
 import json
-import time
+import os
 from datetime import datetime
-from kaggle.api.kaggle_api_extended import KaggleApi
 
-def fetch_defense_data():
-    try:
-        api = KaggleApi()
-        api.authenticate()
-        # উদাহরণস্বরূপ: মিলিটারি এক্সপেন্ডিচার ডেটাসেট সার্চ করা
-        datasets = api.dataset_list(search='military defense')
-        top_trend = datasets[0].title if datasets else "No new trends detected."
-        return f"Latest Global Insight: {top_trend}"
-    except Exception as e:
-        return "Intelligence Feed: Real-time monitoring active."
+# ১. মার্কেট ও ইকোনমিক ডাটা মডিউল (BTC, ETH, TSLA, NVDA)
+def fetch_market_intel():
+    print("📈 Fetching Live Market & NG-Tech Data...")
+    symbols = {
+        "Bitcoin": "BTC-USD",
+        "Ethereum": "ETH-USD",
+        "Tesla": "TSLA",
+        "NVIDIA (AI Trend)": "NVDA",
+        "Gold": "GC=F"
+    }
+    market_report = {}
+    for name, ticker in symbols.items():
+        try:
+            stock = yf.Ticker(ticker)
+            price = stock.history(period="1d")['Close'].iloc[-1]
+            market_report[name] = f"${round(price, 2)}"
+        except:
+            market_report[name] = "Data Unavailable"
+    return market_report
 
-def update_sentinel_dashboard():
-    trend = fetch_defense_data()
-    data = {
-        "status": "ONLINE",
-        "node": "Pixel-7-Intelligence-Node",
-        "update_source": "Kaggle-OSINT-Stream",
-        "live_message": {
-            "user": "Md. Tarequddin Shikder",
-            "intel_level": "Level-01 Strategic",
-            "text": f"{trend} | IDS: Secure",
-            "timestamp": datetime.now().strftime("%I:%M %p")
-        }
+# ২. ডিপ লার্নিং ও এআই রিসার্চ মডিউল (ArXiv)
+def fetch_ai_research_intel():
+    print("🧠 Fetching AI & Deep Learning Research from ArXiv...")
+    url = "http://export.arxiv.org/api/query?search_query=cat:cs.AI+OR+cat:cs.LG&sortBy=submittedDate&max_results=5"
+    feed = feedparser.parse(url)
+    research_list = []
+    for entry in feed.entries:
+        research_list.append({
+            "title": entry.title.replace('\n', ' '),
+            "link": entry.link
+        })
+    return research_list
+
+# ৩. ডাটা সিঙ্ক্রোনাইজেশন ও ড্যাশবোর্ড আপডেট
+def sync_to_dashboard(market_data, ai_data):
+    file_path = "live_intel.json"
+    dashboard_payload = {
+        "last_updated": datetime.now().strftime("%Y-%m-%d %I:%M %p"),
+        "node": "Tecno-Station-Mohammadpur",
+        "market_analysis": market_data,
+        "latest_ai_research": ai_data,
+        "status": "Operational"
     }
     
-    with open('sentinel_data.json', 'w') as f:
-        json.dump(data, f, indent=4)
+    with open(file_path, "w") as f:
+        json.dump(dashboard_payload, f, indent=4)
     
-    os.system("git add sentinel_data.json && git commit -m 'Kaggle Intel Sync' && git push origin main")
-    print(f"✅ Kaggle Intel Sent to Dashboard at {data['live_message']['timestamp']}")
+    print("✅ Dashboard JSON generated. Pushing to GitHub...")
+    os.system("git add .")
+    os.system(f'git commit -m "Sentinel Update: {datetime.now().strftime("%H:%M")}"')
+    os.system("git push origin main")
 
 if __name__ == "__main__":
-    print("🛡️ Sentinel Core: Kaggle OSINT Module Starting...")
-    while True:
-        update_sentinel_dashboard()
-        time.sleep(3600) # প্রতি ১ ঘণ্টা পর পর আপডেট
+    print("🛰️ Sentinel Core Engine Starting...")
+    
+    # ডাটা কালেকশন
+    markets = fetch_market_intel()
+    ai_research = fetch_ai_research_intel()
+    
+    # অটোমেটিক সিঙ্ক এবং পুশ
+    sync_to_dashboard(markets, ai_research)
+    
+    print(f"🏁 Mission Accomplished at {datetime.now().strftime('%I:%M %p')}")
